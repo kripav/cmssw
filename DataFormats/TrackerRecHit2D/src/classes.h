@@ -152,8 +152,11 @@ namespace DataFormats_TrackerRecHit2D {
 
     edm::Wrapper<reco::ClusterRemovalInfo> clusterRemovalInfo;
 
-    std::vector<SiTrackerGSMatchedRecHit2D> stgsmatched2D;
-    edm::Wrapper<std::vector<SiTrackerGSMatchedRecHit2D> > w_stgsmatched2D;
+    FastTMatchedRecHit2DCollection fastTMatchedRecHit2DCollection;
+    edm::Wrapper<FastTMatchedRecHit2DCollection> w_FastTMatchedRecHit2DCollection;
+
+    FastTMatchedRecHit2DCombinations fastTMatchedRecHit2DCombinations;
+    edm::Wrapper<FastTMatchedRecHit2DCombinations> w_FastTMatchedRecHit2DCombinations;
   };
 }
 
