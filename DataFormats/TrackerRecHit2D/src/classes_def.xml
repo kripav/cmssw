@@ -149,6 +149,10 @@
  <class name="edmNew::DetSetVector<SiPixelRecHit>"/>
  <class name="edm::Wrapper<edmNew::DetSetVector<SiPixelRecHit> >"/>
 
+ <class name="std::vector<SiTrackerGSMatchedRecHit2D>"/>
+ <class name="edm::Wrapper<std::vector<SiTrackerGSMatchedRecHit2D> >"/>
+
+
   <class name="reco::ClusterRemovalInfo"  ClassVersion="10">
    <version ClassVersion="10" checksum="529080197"/>
   </class>

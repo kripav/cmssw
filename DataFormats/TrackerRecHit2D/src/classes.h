@@ -151,6 +151,9 @@ namespace DataFormats_TrackerRecHit2D {
     edm::Wrapper<edmNew::DetSetVector<SiPixelRecHit> > wdstvDummy3;
 
     edm::Wrapper<reco::ClusterRemovalInfo> clusterRemovalInfo;
+
+    std::vector<SiTrackerGSMatchedRecHit2D> stgsmatched2D;
+    edm::Wrapper<std::vector<SiTrackerGSMatchedRecHit2D> > w_stgsmatched2D;
   };
 }
 

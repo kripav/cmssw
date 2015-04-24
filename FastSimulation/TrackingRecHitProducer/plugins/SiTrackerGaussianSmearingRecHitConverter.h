@@ -49,6 +49,10 @@ namespace edm {
 class RandomEngineAndDistribution;
 class TrackerTopology;
 
+typedef std::vector<SiTrackerGSMatchedRecHit2D> STMatchedRecHitCollection;
+typedef edm::Ref<std::vector<SiTrackerGSMatchedRecHit2D> > STMatchedRecHitRef;
+typedef std::vector<STMatchedRecHitRef> STMatchedRecHitRefCollection;  
+
 class SiTrackerGaussianSmearingRecHitConverter : public edm::stream::EDProducer <>
 {
  public:
@@ -81,7 +85,7 @@ class SiTrackerGaussianSmearingRecHitConverter : public edm::stream::EDProducer 
 		   SiTrackerGSRecHit2DCollection& theRecHitCollection) const;
 
   void loadMatchedRecHits(std::map<unsigned,edm::OwnVector<SiTrackerGSMatchedRecHit2D> >& theRecHits, 
-		   SiTrackerGSMatchedRecHit2DCollection& theRecHitCollection) const;
+		   std::vector<SiTrackerGSMatchedRecHit2D>& theRecHitCollection) const;
 
   void loadClusters(std::map<unsigned,edm::OwnVector<FastTrackerCluster> >& theClusterMap, 
                     FastTrackerClusterCollection& theClusterCollection) const;
@@ -253,7 +257,6 @@ class SiTrackerGaussianSmearingRecHitConverter : public edm::stream::EDProducer 
   // Added for cluster reference
   ClusterRefProd FastTrackerClusterRefProd;
 
-  
 };
 
 
