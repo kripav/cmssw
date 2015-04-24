@@ -52,6 +52,7 @@ class TrackerTopology;
 typedef std::vector<SiTrackerGSMatchedRecHit2D> STMatchedRecHitCollection;
 typedef edm::Ref<std::vector<SiTrackerGSMatchedRecHit2D> > STMatchedRecHitRef;
 typedef std::vector<STMatchedRecHitRef> STMatchedRecHitRefCollection;  
+typedef std::vector<STMatchedRecHitRefCollection> RecHitCombinations;
 
 class SiTrackerGaussianSmearingRecHitConverter : public edm::stream::EDProducer <>
 {

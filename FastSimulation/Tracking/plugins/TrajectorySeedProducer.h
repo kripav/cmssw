@@ -20,6 +20,8 @@
 
 #include "FastSimulation/Tracking/interface/SeedingTree.h"
 #include "FastSimulation/Tracking/interface/TrackingLayer.h"
+
+#include "FastSimulation/TrackingRecHitProducer/plugins/SiTrackerGaussianSmearingRecHitConverter.h"
 	 //#include "DataFormats/BeamSpot/interface/BeamSpot.h"
 	 //#include "DataFormats/TrackReco/interface/TrackFwd.h"
 
@@ -78,6 +80,8 @@ class TrajectorySeedProducer: public edm::stream::EDProducer <>
         edm::EDGetTokenT<edm::SimTrackContainer> simTrackToken;
         edm::EDGetTokenT<edm::SimVertexContainer> simVertexToken;
         edm::EDGetTokenT<SiTrackerGSMatchedRecHit2DCollection> recHitToken;
+        edm::EDGetTokenT<RecHitCombinations> recHitRefToken;
+
         edm::EDGetTokenT<reco::VertexCollection> recoVertexToken;
 	std::vector<edm::EDGetTokenT<std::vector<int> > > skipSimTrackIdTokens;
 
