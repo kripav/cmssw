@@ -49,10 +49,6 @@ namespace edm {
 class RandomEngineAndDistribution;
 class TrackerTopology;
 
-typedef std::vector<SiTrackerGSMatchedRecHit2D> STMatchedRecHitCollection;
-typedef edm::Ref<std::vector<SiTrackerGSMatchedRecHit2D> > STMatchedRecHitRef;
-typedef std::vector<STMatchedRecHitRef> STMatchedRecHitRefCollection;  
-
 class SiTrackerGaussianSmearingRecHitConverter : public edm::stream::EDProducer <>
 {
  public:
