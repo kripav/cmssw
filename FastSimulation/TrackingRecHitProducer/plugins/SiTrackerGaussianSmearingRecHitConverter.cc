@@ -81,9 +81,9 @@ SiTrackerGaussianSmearingRecHitConverter::SiTrackerGaussianSmearingRecHitConvert
 #endif
 
   //PAT
-  //produces<FastTrackerClusterCollection>();
-  produces<SiTrackerGSRecHit2DCollection>();
-  produces<FastTMatchedRecHit2DCollection>();
+  produces<FastTrackerClusterCollection>("TrackerClusters");
+  produces<SiTrackerGSRecHit2DCollection>("TrackerGSRecHits");
+  produces<FastTMatchedRecHit2DCollection>("TrackerGSMatchedRecHits");
   produces<FastTMatchedRecHit2DCombinations>();
   //--- PSimHit Containers
   //  trackerContainers.clear();
@@ -648,8 +648,8 @@ void SiTrackerGaussianSmearingRecHitConverter::produce(edm::Event& e, const edm:
   
 
   // Step E: write output to file
-  e.put(recHitCollection);
-  const edm::OrphanHandle<FastTMatchedRecHit2DCollection> recHitCollectionMatched_handle = e.put(recHitCollectionMatched);
+  e.put(recHitCollection,"TrackerGSRecHits");
+  const edm::OrphanHandle<FastTMatchedRecHit2DCollection> recHitCollectionMatched_handle = e.put(recHitCollectionMatched,"TrackerGSMatchedRecHits");
 
   
   unsigned int i= 0;
@@ -669,7 +669,7 @@ void SiTrackerGaussianSmearingRecHitConverter::produce(edm::Event& e, const edm:
   //STEP F: write clusters
   std::auto_ptr<FastTrackerClusterCollection> clusterCollection(new FastTrackerClusterCollection);
   loadClusters(theClusters, *clusterCollection);
-  //e.put(clusterCollection);
+  e.put(clusterCollection,"TrackerClusters");
 }
 
 
