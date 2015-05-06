@@ -5,7 +5,7 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 
 #include "DataFormats/TrackCandidate/interface/TrackCandidateCollection.h"
-
+#include "DataFormats/TrackerRecHit2D/interface/SiTrackerGSMatchedRecHit2D.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "TrackingTools/PatternTools/interface/Trajectory.h"
 #include "TrackingTools/PatternTools/interface/TrajTrackAssociation.h"
@@ -47,7 +47,9 @@ class TrackCandidateProducer : public edm::stream::EDProducer <>
   
  private:
 
-  void addSplitHits(const TrajectorySeedHitCandidate&, std::vector<TrajectorySeedHitCandidate>&); 
+  void addSplitHits(const TrajectorySeedHitCandidate&, std::vector<TrajectorySeedHitCandidate>&);
+  void addHits(const TrajectorySeedHitCandidate&, std::vector<TrajectorySeedHitCandidate>&);
+  void removeHits(const TrajectorySeedHitCandidate&, std::vector<TrajectorySeedHitCandidate>&);  
   const TrackerGeometry*  theGeometry;
   const MagneticField*  theMagField;
   PropagatorWithMaterial* thePropagator;
@@ -56,7 +58,7 @@ class TrackCandidateProducer : public edm::stream::EDProducer <>
   edm::InputTag seedProducer;
   edm::InputTag hitProducer;
   std::vector<edm::InputTag> trackProducers;
-  
+ 
   unsigned int minNumberOfCrossedLayers;
   unsigned int maxNumberOfCrossedLayers;
 
@@ -69,7 +71,7 @@ class TrackCandidateProducer : public edm::stream::EDProducer <>
 
   // tokens
   edm::EDGetTokenT<edm::View<TrajectorySeed> > seedToken;
-  edm::EDGetTokenT<SiTrackerGSMatchedRecHit2DCollection> recHitToken;
+  edm::EDGetTokenT<FastTMatchedRecHit2DCombinations> recHitRefToken;
   edm::EDGetTokenT<edm::SimVertexContainer> simVertexToken;
   edm::EDGetTokenT<edm::SimTrackContainer> simTrackToken;
 };

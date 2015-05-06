@@ -80,6 +80,12 @@ private:
   SiTrackerGSRecHit2D componentStereo_;
 };
 
+typedef SiTrackerGSMatchedRecHit2D FastTMatchedRecHit2D; //FastT stands for FastSim Tracker
+typedef std::vector<FastTMatchedRecHit2D> FastTMatchedRecHit2DCollection;
+typedef edm::Ref<FastTMatchedRecHit2DCollection> FastTMatchedRecHit2DRef;
+typedef std::vector<FastTMatchedRecHit2DRef> FastTMatchedRecHit2DCombination;  
+typedef std::vector<FastTMatchedRecHit2DCombination> FastTMatchedRecHit2DCombinations;  
+
 
 
 #endif

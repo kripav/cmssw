@@ -82,10 +82,9 @@ SiTrackerGaussianSmearingRecHitConverter::SiTrackerGaussianSmearingRecHitConvert
 
   //PAT
   produces<FastTrackerClusterCollection>("TrackerClusters");
-
   produces<SiTrackerGSRecHit2DCollection>("TrackerGSRecHits");
-  produces<SiTrackerGSMatchedRecHit2DCollection>("TrackerGSMatchedRecHits");
-
+  produces<FastTMatchedRecHit2DCollection>("TrackerGSMatchedRecHits");
+  produces<FastTMatchedRecHit2DCombinations>();
   //--- PSimHit Containers
   //  trackerContainers.clear();
   //  trackerContainers = conf.getParameter<std::vector<edm::InputTag> >("ROUList");
@@ -630,7 +629,8 @@ void SiTrackerGaussianSmearingRecHitConverter::produce(edm::Event& e, const edm:
 
   // Step D: from the temporary RecHit collection, create the real one.
   std::auto_ptr<SiTrackerGSRecHit2DCollection> recHitCollection(new SiTrackerGSRecHit2DCollection);
-  std::auto_ptr<SiTrackerGSMatchedRecHit2DCollection> recHitCollectionMatched(new SiTrackerGSMatchedRecHit2DCollection);
+  std::auto_ptr<FastTMatchedRecHit2DCollection> recHitCollectionMatched(new FastTMatchedRecHit2DCollection);
+  std::auto_ptr<FastTMatchedRecHit2DCombinations> recHitCombinations(new FastTMatchedRecHit2DCombinations);
   if(doMatching){
     loadMatchedRecHits(temporaryMatchedRecHits, *recHitCollectionMatched);
     loadRecHits(temporaryRecHits, *recHitCollection);
@@ -639,17 +639,32 @@ void SiTrackerGaussianSmearingRecHitConverter::produce(edm::Event& e, const edm:
     //might need to have a "matched" hit collection containing the simple hits
     loadRecHits(temporaryRecHits, *recHitCollection);
   }
-  
-  
 
-  //std::cout << "****** TrackerGSRecHits hits are =\t" <<  (*recHitCollection).size()<<std::endl;
-  //std::cout << "****** TrackerGSRecHitsMatched hits are =\t" <<  (*recHitCollectionMatched).size()<< std::endl;
-  
+  std::vector<int> recHitSimTrackIds;
+  for(unsigned int i=0; i<recHitCollectionMatched->size();i++) {
+    recHitSimTrackIds.push_back(recHitCollectionMatched->at(i).simtrackId());
+  }
+
   
 
   // Step E: write output to file
   e.put(recHitCollection,"TrackerGSRecHits");
-  e.put(recHitCollectionMatched,"TrackerGSMatchedRecHits");
+  const edm::OrphanHandle<FastTMatchedRecHit2DCollection> recHitCollectionMatched_handle = e.put(recHitCollectionMatched,"TrackerGSMatchedRecHits");
+
+  
+  unsigned int i= 0;
+  while (i < recHitSimTrackIds.size() ){
+    FastTMatchedRecHit2DCombination currComb;
+    int currId = recHitSimTrackIds[i];
+    while( recHitSimTrackIds[i] == currId){
+      currComb.push_back(FastTMatchedRecHit2DRef(recHitCollectionMatched_handle,i));
+      i++;
+    }
+    recHitCombinations->push_back(currComb);
+    
+  }
+  e.put(recHitCombinations); 
+  
   
   //STEP F: write clusters
   std::auto_ptr<FastTrackerClusterCollection> clusterCollection(new FastTrackerClusterCollection);
@@ -1233,15 +1248,14 @@ SiTrackerGaussianSmearingRecHitConverter::loadRecHits(
 void 
 SiTrackerGaussianSmearingRecHitConverter::loadMatchedRecHits(
      std::map<unsigned,edm::OwnVector<SiTrackerGSMatchedRecHit2D> >& theRecHits, 
-     SiTrackerGSMatchedRecHit2DCollection& theRecHitCollection) const
+     std::vector<SiTrackerGSMatchedRecHit2D>& theRecHitCollection) const
 {
-  std::map<unsigned,edm::OwnVector<SiTrackerGSMatchedRecHit2D> >::const_iterator 
-    it = theRecHits.begin();
-  std::map<unsigned,edm::OwnVector<SiTrackerGSMatchedRecHit2D> >::const_iterator 
-    lastRecHit = theRecHits.end();
 
-  for( ; it != lastRecHit ; ++it ) { 
-    theRecHitCollection.put(it->first,(it->second).begin(),(it->second).end());
+  for( auto it= theRecHits.begin(); it != theRecHits.end() ; ++it ) {
+    for( auto rechit =(it->second).begin();rechit!= (it->second).end();++rechit){
+    //theRecHitCollection.put(it->first,(it->second).begin(),(it->second).end());
+        theRecHitCollection.push_back(*rechit);
+      }
   }
 
 }
