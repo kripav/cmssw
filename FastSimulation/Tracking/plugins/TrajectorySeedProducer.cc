@@ -91,8 +91,8 @@ TrajectorySeedProducer::TrajectorySeedProducer(const edm::ParameterSet& conf):
     }
     
     // The name of the hit producer
-    edm::InputTag recHitTag = conf.getParameter<edm::InputTag>("recHits");
-    recHitToken = consumes<SiTrackerGSMatchedRecHit2DCollection>(recHitTag);
+    edm::InputTag recHitCombinationsTag = conf.getParameter<edm::InputTag>("recHitCombinations");
+    recHitCombinationsToken = consumes<SiTrackerGSMatchedRecHit2DCollection>(recHitCombinationsTag);
 
     // read Layers
     std::vector<std::string> layerStringList = conf.getParameter<std::vector<std::string>>("layerList");
@@ -389,22 +389,19 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
     edm::Handle<edm::SimVertexContainer> theSimVtx;
     e.getByToken(simVertexToken,theSimVtx);
     
-    // edm::Handle<SiTrackerGSRecHit2DCollection> theGSRecHits;
-    edm::Handle<SiTrackerGSMatchedRecHit2DCollection> theGSRecHits;
-    e.getByToken(recHitToken, theGSRecHits);
+    edm::Handle<FastTMatchedRecHit2DCombinations> theRecHitCombinations;
+    e.getByToken(recHitCombinationsToken, theRecHitCombinations);
 
     std::auto_ptr<TrajectorySeedCollection> output{new TrajectorySeedCollection()};
+    std::auto_ptr<FastTMatchedRecHit2DCombinations> outputCombinations{new FastTMatchedRecHit2DCombinations()};
 
-    //if no hits -> directly write empty collection
-    if(theGSRecHits->size() == 0)
-    {
-        e.put(output);
-        return;
-    }
-    for (SiTrackerGSMatchedRecHit2DCollection::id_iterator itSimTrackId=theGSRecHits->id_begin();  itSimTrackId!=theGSRecHits->id_end(); ++itSimTrackId )
-    {
+    for (unsigned int c=0; c < theRecHitCombinations->size(); ++c ){
+      
+      const FastTMatchedRecHit2DCombination & theRecHitCombination = theRecHitCombinations->at(c);
+      if(theRecHitCombination.size() ==0)
+	continue;
 
-        const unsigned int currentSimTrackId = *itSimTrackId;
+      int currentSimTrackId = theRecHitCombination[0].get()->simtrackId();
 
         if(skipSimTrackIds.find(currentSimTrackId)!=skipSimTrackIds.end())
         {
@@ -432,12 +429,10 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
         unsigned int layersCrossed=0;
 
         std::vector<TrajectorySeedHitCandidate> trackerRecHits;
-        for (SiTrackerGSMatchedRecHit2DCollection::const_iterator itRecHit = recHitRange.first; itRecHit!=recHitRange.second; ++itRecHit)
-        {
-            const SiTrackerGSMatchedRecHit2D& vec = *itRecHit;
-            previousTrackerHit=currentTrackerHit;
-
-            currentTrackerHit = TrajectorySeedHitCandidate(&vec,trackerGeometry,trackerTopology);
+	for (unsigned int h=0; h < theRecHitCombination.size(); ++h){
+	  const SiTrackerGSMatchedRecHit2D& theRecHit = *theRecHitCombination[h];
+	  previousTrackerHit=currentTrackerHit;
+	  currentTrackerHit = TrajectorySeedHitCandidate(&theRecHit,trackerGeometry,trackerTopology);
 
             if (!currentTrackerHit.isOnTheSameLayer(previousTrackerHit))
             {
@@ -518,12 +513,14 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
             int surfaceSide = static_cast<int>(initialTSOS.surfaceSide());
             initialState = PTrajectoryStateOnDet( initialTSOS.localParameters(),initialTSOS.globalMomentum().perp(),localErrors, recHits.back().geographicalId().rawId(), surfaceSide);
             output->push_back(TrajectorySeed(initialState, recHits, PropagationDirection::alongMomentum));
+	    outputCombinations->push_back(theRecHitCombination);
 
         }
     } //end loop over simtracks
     
 
     e.put(output);
+    e.put(outputCombinations);
 }
 
 

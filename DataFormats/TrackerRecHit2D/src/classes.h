@@ -151,6 +151,12 @@ namespace DataFormats_TrackerRecHit2D {
     edm::Wrapper<edmNew::DetSetVector<SiPixelRecHit> > wdstvDummy3;
 
     edm::Wrapper<reco::ClusterRemovalInfo> clusterRemovalInfo;
+
+    FastTMatchedRecHit2DCollection fastTMatchedRecHit2DCollection;
+    edm::Wrapper<FastTMatchedRecHit2DCollection> w_FastTMatchedRecHit2DCollection;
+
+    FastTMatchedRecHit2DCombinations fastTMatchedRecHit2DCombinations;
+    edm::Wrapper<FastTMatchedRecHit2DCombinations> w_FastTMatchedRecHit2DCombinations;
   };
 }
 

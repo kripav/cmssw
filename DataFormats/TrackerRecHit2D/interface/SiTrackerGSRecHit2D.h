@@ -72,4 +72,6 @@ inline bool operator<( const SiTrackerGSRecHit2D& one, const SiTrackerGSRecHit2D
   }
 }
 
+typedef SiTrackerGSRecHit2D FastTRecHit2D; //FastT stands for FastSim Tracker
+
 #endif
