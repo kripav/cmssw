@@ -68,7 +68,7 @@ class TrajectorySeedProducer:
         edm::EDGetTokenT<reco::BeamSpot> beamSpotToken;
         edm::EDGetTokenT<edm::SimTrackContainer> simTrackToken;
         edm::EDGetTokenT<edm::SimVertexContainer> simVertexToken;
-        edm::EDGetTokenT<FastTMatchedRecHit2DCombinations> recHitRefToken;
+        edm::EDGetTokenT<FastTMatchedRecHit2DCombinations> recHitCombinationsToken;
         edm::EDGetTokenT<reco::VertexCollection> recoVertexToken;
         std::vector<edm::EDGetTokenT<std::vector<unsigned int> > > skipSimTrackIdTokens;
 

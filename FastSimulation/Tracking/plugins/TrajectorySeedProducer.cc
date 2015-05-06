@@ -92,7 +92,7 @@ TrajectorySeedProducer::TrajectorySeedProducer(const edm::ParameterSet& conf):
     
     // The name of the hit producer
     edm::InputTag recHitCombinationsTag = conf.getParameter<edm::InputTag>("recHitCombinations");
-    recHitCombinationsToken = consumes<SiTrackerGSMatchedRecHit2DCollection>(recHitCombinationsTag);
+    recHitCombinationsToken = consumes<FastTMatchedRecHit2DCombinations>(recHitCombinationsTag);
 
     // read Layers
     std::vector<std::string> layerStringList = conf.getParameter<std::vector<std::string>>("layerList");
@@ -160,6 +160,7 @@ TrajectorySeedProducer::beginRun(edm::Run const&, const edm::EventSetup & es)
     magneticFieldMap = &(*magneticFieldMapHandle);
     trackerTopology = &(*trackerTopologyHandle);
 
+    // todo: get the propagator from the event
     thePropagator = std::make_shared<PropagatorWithMaterial>(alongMomentum,0.105,magneticField);
 }
 
@@ -422,7 +423,6 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
         {
             continue;
         }
-        SiTrackerGSMatchedRecHit2DCollection::range recHitRange = theGSRecHits->get(currentSimTrackId);
 
         TrajectorySeedHitCandidate previousTrackerHit;
         TrajectorySeedHitCandidate currentTrackerHit;

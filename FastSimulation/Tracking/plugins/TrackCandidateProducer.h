@@ -5,6 +5,7 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 
 #include "DataFormats/TrackCandidate/interface/TrackCandidateCollection.h"
+#include "DataFormats/TrajectorySeed/interface/TrajectorySeedCollection.h"
 #include "DataFormats/TrackerRecHit2D/interface/SiTrackerGSMatchedRecHit2D.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "TrackingTools/PatternTools/interface/Trajectory.h"
@@ -15,7 +16,6 @@
 #include "FastSimulation/Tracking/interface/TrajectorySeedHitCandidate.h"
 
 class TrackerGeometry;
-class TrajectoryStateOnSurface;
 class PropagatorWithMaterial;
 
 namespace edm { 
@@ -38,42 +38,27 @@ class TrackCandidateProducer : public edm::stream::EDProducer <>
  public:
   
   explicit TrackCandidateProducer(const edm::ParameterSet& conf);
-  
-  virtual ~TrackCandidateProducer();
-  
+  virtual ~TrackCandidateProducer(){};
   virtual void beginRun(edm::Run const& run, const edm::EventSetup & es) override;
-  
   virtual void produce(edm::Event& e, const edm::EventSetup& es) override;
   
  private:
 
-  void addSplitHits(const TrajectorySeedHitCandidate&, std::vector<TrajectorySeedHitCandidate>&);
   void addHits(const TrajectorySeedHitCandidate&, std::vector<TrajectorySeedHitCandidate>&);
   void removeHits(const TrajectorySeedHitCandidate&, std::vector<TrajectorySeedHitCandidate>&);  
   const TrackerGeometry*  theGeometry;
   const MagneticField*  theMagField;
-  PropagatorWithMaterial* thePropagator;
-
-
-  edm::InputTag seedProducer;
-  edm::InputTag hitProducer;
-  std::vector<edm::InputTag> trackProducers;
- 
-  unsigned int minNumberOfCrossedLayers;
-  unsigned int maxNumberOfCrossedLayers;
+  const TrackerTopology * theTTopo;
+  std::shared_ptr<PropagatorWithMaterial> thePropagator;
 
   bool rejectOverlaps;
   bool splitHits;
-  bool seedCleaning;
  
-  edm::InputTag simTracks_;
-  double estimatorCut_;
-
   // tokens
-  edm::EDGetTokenT<edm::View<TrajectorySeed> > seedToken;
-  edm::EDGetTokenT<FastTMatchedRecHit2DCombinations> recHitRefToken;
-  edm::EDGetTokenT<edm::SimVertexContainer> simVertexToken;
-  edm::EDGetTokenT<edm::SimTrackContainer> simTrackToken;
+  edm::EDGetTokenT<TrajectorySeedCollection> seedCollectionToken;
+  edm::EDGetTokenT<FastTMatchedRecHit2DCombinations> recHitCombinationsToken;
+  edm::EDGetTokenT<edm::SimVertexContainer> simVtxCollectionToken;
+  edm::EDGetTokenT<edm::SimTrackContainer> simTkCollectionToken;
 };
 
 #endif
