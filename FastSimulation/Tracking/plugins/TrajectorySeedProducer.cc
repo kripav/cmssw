@@ -160,6 +160,7 @@ TrajectorySeedProducer::beginRun(edm::Run const&, const edm::EventSetup & es)
     magneticFieldMap = &(*magneticFieldMapHandle);
     trackerTopology = &(*trackerTopologyHandle);
 
+    // todo: get the propagator from the event
     thePropagator = std::make_shared<PropagatorWithMaterial>(alongMomentum,0.105,magneticField);
 }
 
@@ -422,7 +423,7 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
         {
             continue;
         }
-	TrajectorySeedHitCandidate previousTrackerHit;
+        TrajectorySeedHitCandidate previousTrackerHit;
         TrajectorySeedHitCandidate currentTrackerHit;
         unsigned int layersCrossed=0;
 
