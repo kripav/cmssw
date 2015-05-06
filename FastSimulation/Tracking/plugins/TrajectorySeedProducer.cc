@@ -92,7 +92,7 @@ TrajectorySeedProducer::TrajectorySeedProducer(const edm::ParameterSet& conf):
     
     // The name of the hit producer
     edm::InputTag recHitCombinationsTag = conf.getParameter<edm::InputTag>("recHitCombinations");
-    recHitCombinationsToken = consumes<SiTrackerGSMatchedRecHit2DCollection>(recHitCombinationsTag);
+    recHitCombinationsToken = consumes<FastTMatchedRecHit2DCombinations>(recHitCombinationsTag);
 
     // read Layers
     std::vector<std::string> layerStringList = conf.getParameter<std::vector<std::string>>("layerList");
@@ -422,9 +422,7 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
         {
             continue;
         }
-        SiTrackerGSMatchedRecHit2DCollection::range recHitRange = theGSRecHits->get(currentSimTrackId);
-
-        TrajectorySeedHitCandidate previousTrackerHit;
+	TrajectorySeedHitCandidate previousTrackerHit;
         TrajectorySeedHitCandidate currentTrackerHit;
         unsigned int layersCrossed=0;
 
