@@ -15,7 +15,9 @@ public:
  
   
   SiTrackerGSRecHit2D(): GSSiTrackerRecHit2DLocalPos(),
-			 simhitId_(),
+                         Id_(),
+                         simtrackId1_(),
+			 simtrackId2_(),
 			 simtrackId_(),
 			 eeId_(),
                          cluster_(),  
@@ -30,7 +32,9 @@ public:
 
   SiTrackerGSRecHit2D( const LocalPoint&, const LocalError&,
 		       GeomDet const & idet,
-		       const int simhitId,
+		       const int Id,
+		       const int simtrackId1,
+		       const int simtrackId2,
 		       const int simtrackId,
 		       const uint32_t eeId,
 		       ClusterRef const&  cluster,
@@ -39,7 +43,9 @@ public:
   
   virtual SiTrackerGSRecHit2D * clone() const {SiTrackerGSRecHit2D * p = new SiTrackerGSRecHit2D( * this); p->load(); return p;}
   
-  const int& simhitId()    const { return simhitId_;}
+  const int& Id()          const { return Id_;}
+  const int& simtrackId1()   const { return simtrackId1_;}
+  const int& simtrackId2()   const { return simtrackId2_;}
   const int& simtrackId()  const { return simtrackId_;}
   const uint32_t& eeId()   const { return eeId_;}
   const int& simMultX()    const { return pixelMultiplicityAlpha_;}
@@ -53,8 +59,9 @@ public:
   virtual bool sharesInput( const TrackingRecHit* other, SharedInputType what) const {return false;}
   
  private:
-  
-  int simhitId_;
+  int Id_;
+  int simtrackId1_;
+  int simtrackId2_;
   int simtrackId_;
   uint32_t eeId_;
   ClusterRef cluster_;

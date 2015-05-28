@@ -10,15 +10,16 @@ class SiTrackerGSMatchedRecHit2D : public GSSiTrackerRecHit2DLocalPos{
 public:
   
   SiTrackerGSMatchedRecHit2D(): GSSiTrackerRecHit2DLocalPos(),
-			 simhitId_(),
-			 simtrackId_(),
-			 eeId_(),
-                         cluster_(),  
-                         pixelMultiplicityAlpha_(), 
-                         pixelMultiplicityBeta_(),
-                         isMatched_(), 
-                         componentMono_(),
-                         componentStereo_() {}
+    Id_(),
+    simtrackId1_(),
+    simtrackId2_(),
+    eeId_(),
+    cluster_(),  
+    pixelMultiplicityAlpha_(), 
+    pixelMultiplicityBeta_(),
+    isMatched_(), 
+    componentMono_(),
+    componentStereo_() {}
   
   ~SiTrackerGSMatchedRecHit2D() {}
   
@@ -27,32 +28,34 @@ public:
 
 
   SiTrackerGSMatchedRecHit2D( const LocalPoint&, const LocalError&,
-		       GeomDet const & idet,
-		       const int simhitId,
-		       const int simtrackId,
-		       const uint32_t eeId,
-                       ClusterRef const&  cluster,
-		       const int pixelMultiplicityX,
-		       const int pixelMultiplicityY,
-		       const bool isMatched,
-		       const SiTrackerGSRecHit2D* rMono, 
-		       const SiTrackerGSRecHit2D* rStereo 
-		       );  
+			      GeomDet const & idet,
+			      const int Id,
+			      const int simtrackId1,			     
+			      const int simtrackId2,
+			      const uint32_t eeId,
+			      ClusterRef const&  cluster,
+			      const int pixelMultiplicityX,
+			      const int pixelMultiplicityY,
+			      const bool isMatched,
+			      const SiTrackerGSRecHit2D* rMono, 
+			      const SiTrackerGSRecHit2D* rStereo 
+			      );  
 
   SiTrackerGSMatchedRecHit2D( const LocalPoint&, const LocalError&,
-		       GeomDet const & idet,
-		       const int simhitId,
-		       const int simtrackId,
-		       const uint32_t eeId,
-                       ClusterRef const&  cluster,
-		       const int pixelMultiplicityX,
-		       const int pixelMultiplicityY
-		       );  
+			      GeomDet const & idet,
+			      const int Id,
+			      const int simtrackId1,
+			      const int simtrackId2,
+			      const uint32_t eeId,
+			      ClusterRef const&  cluster,
+			      const int pixelMultiplicityX,
+			      const int pixelMultiplicityY
+			      );  
 
   virtual SiTrackerGSMatchedRecHit2D * clone() const {SiTrackerGSMatchedRecHit2D * p =  new SiTrackerGSMatchedRecHit2D( * this); p->load(); return p;}
-  
-  const int& simhitId()    const { return simhitId_;}
-  const int& simtrackId()  const { return simtrackId_;}
+  const int& Id()           const { return Id_;}
+  const int& simtrackId1()  const { return simtrackId1_;}
+  const int& simtrackId2()  const { return simtrackId2_;}
   const uint32_t& eeId()   const { return eeId_;}
   const int& simMultX()    const { return pixelMultiplicityAlpha_;}
   const int& simMultY()    const { return pixelMultiplicityBeta_;}
@@ -68,8 +71,9 @@ public:
   virtual bool sharesInput( const TrackingRecHit* other, SharedInputType what) const;
  
 private:
-  int const simhitId_;
-  int const simtrackId_;
+  int const Id_;
+  int const simtrackId1_;
+  int const simtrackId2_;
   uint32_t eeId_;
   ClusterRef cluster_;
   int const pixelMultiplicityAlpha_;

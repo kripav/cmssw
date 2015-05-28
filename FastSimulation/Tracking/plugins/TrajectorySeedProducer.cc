@@ -402,7 +402,7 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
       if(theRecHitCombination.size() ==0)
 	continue;
 
-      int currentSimTrackId = theRecHitCombination[0].get()->simtrackId();
+      int currentSimTrackId = theRecHitCombination[0].get()->simtrackId1();
 
         if(skipSimTrackIds.find(currentSimTrackId)!=skipSimTrackIds.end())
         {

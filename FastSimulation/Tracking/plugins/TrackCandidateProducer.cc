@@ -146,7 +146,7 @@ TrackCandidateProducer::produce(edm::Event& e, const edm::EventSetup& es) {
     }
 
     // find the SimTrack that corresponds to the RecHitCombination
-    const SimTrack & simTk = theSimTkCollection->at(theRecHitCombination[0].get()->simtrackId());
+    const SimTrack & simTk = theSimTkCollection->at(theRecHitCombination[0].get()->simtrackId1());
 
     // find the corresponding SimVertex
     const SimVertex & simVtx = theSimVtxCollection->at(simTk.vertIndex());
@@ -190,17 +190,17 @@ void TrackCandidateProducer::addHits(const TrajectorySeedHitCandidate& theCurren
       const SiTrackerGSRecHit2D* sHit = theCurrentRecHit.matchedHit()->stereoHit();
       
       // Add the new hits
-      if( mHit->simhitId() < sHit->simhitId() ) {
+      //  if( mHit->simhitId() < sHit->simhitId() ) {
 	
 	theTrackerRecHits.push_back(TrajectorySeedHitCandidate(mHit,theCurrentRecHit));
 	theTrackerRecHits.push_back(TrajectorySeedHitCandidate(sHit,theCurrentRecHit));
 	
-      } else {
+	//  } else {
 	
-	theTrackerRecHits.push_back(TrajectorySeedHitCandidate(sHit,theCurrentRecHit));
-	theTrackerRecHits.push_back(TrajectorySeedHitCandidate(mHit,theCurrentRecHit));
+	//	theTrackerRecHits.push_back(TrajectorySeedHitCandidate(sHit,theCurrentRecHit));
+	//	theTrackerRecHits.push_back(TrajectorySeedHitCandidate(mHit,theCurrentRecHit));
 	
-      }
+	//  }
   }
   else
     theTrackerRecHits.push_back(theCurrentRecHit);

@@ -562,10 +562,10 @@ void PFSimParticleProducer::getSimIDs( const TrackHandle& trackh,
 	  
 // 	  cout <<  "rechit" 	       
 // 	       << " corresponding simId " 
-// 	       << rechit->simtrackId() 
+// 	       << rechit->simtrackId1() 
 // 	       << endl;
 
-	  recTrackSimID.push_back( rechit->simtrackId() );
+	  recTrackSimID.push_back( rechit->simtrackId1() );
 	  break;
 	}
       }//loop track rechit

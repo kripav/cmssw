@@ -3,7 +3,9 @@
 
 SiTrackerGSRecHit2D::SiTrackerGSRecHit2D( const LocalPoint& pos, const LocalError& err,
 					  GeomDet const & idet,
-					  const int simhitId         ,
+					  const int Id               ,
+					  const int simtrackId1      ,
+					  const int simtrackId2      ,
 					  const int simtrackId       ,
 					  const uint32_t eeId        ,
 					  ClusterRef const&  cluster ,
@@ -11,7 +13,9 @@ SiTrackerGSRecHit2D::SiTrackerGSRecHit2D( const LocalPoint& pos, const LocalErro
 					  const int pixelMultiplicityY = -1 
 					   ): 
   GSSiTrackerRecHit2DLocalPos(pos,err,idet) ,
-  simhitId_(simhitId) ,
+  Id_(Id) ,
+  simtrackId1_(simtrackId1) ,
+  simtrackId2_(simtrackId2) ,
   simtrackId_(simtrackId) ,
   eeId_(eeId) ,
   cluster_(cluster), 

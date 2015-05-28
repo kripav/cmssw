@@ -576,6 +576,7 @@ SiTrackerGaussianSmearingRecHitConverter::beginRun(edm::Run const&, const edm::E
   loadPixelData();
   //
 
+
   // Initialize and open relevant files for the pixel barrel error parametrization
   thePixelBarrelParametrization = 
     new SiPixelGaussianSmearingRecHitConverterAlgorithm(
@@ -596,6 +597,8 @@ void SiTrackerGaussianSmearingRecHitConverter::produce(edm::Event& e, const edm:
   edm::ESHandle<TrackerTopology> tTopoHand;
   es.get<IdealGeometryRecord>().get(tTopoHand);
   const TrackerTopology *tTopo=tTopoHand.product();
+
+
 
 
   // Step 0: Declare Ref and RefProd
@@ -642,7 +645,7 @@ void SiTrackerGaussianSmearingRecHitConverter::produce(edm::Event& e, const edm:
 
   std::vector<int> recHitSimTrackIds;
   for(unsigned int i=0; i<recHitCollectionMatched->size();i++) {
-    recHitSimTrackIds.push_back(recHitCollectionMatched->at(i).simtrackId());
+    recHitSimTrackIds.push_back(recHitCollectionMatched->at(i).simtrackId1());
   }
 
   
@@ -697,14 +700,14 @@ void SiTrackerGaussianSmearingRecHitConverter::smearHits(const edm::PSimHitConta
   LocalError error;
   LocalError inflatedError;
   
-  int simHitCounter = -1;
+   int simHitCounter = -1;
   int recHitCounter = 0;
 
   
   // loop on PSimHits
 
   for ( ; isim != lastSimHit; ++isim ) {
-    ++simHitCounter;
+     ++simHitCounter;
     
     DetId det((*isim).detUnitId());
     const GeomDetUnit & theDetUnit = *geometry->idToDetUnit(det);
@@ -807,14 +810,16 @@ void SiTrackerGaussianSmearingRecHitConverter::smearHits(const edm::PSimHitConta
       //create cluster
       if(subdet > 2) theClusters[trackID].push_back(
 						    new FastTrackerCluster(LocalPoint(position.x(), 0.0, 0.0), error, det,
-									   simHitCounter, trackID,
+									   simHitCounter,
+									   trackID,
 									   eeID,
 									   //(*isim).energyLoss())
 									   chargeADC)
 						    );
       else theClusters[trackID].push_back(
 					  new FastTrackerCluster(position, error, det,
-								 simHitCounter, trackID,
+								 simHitCounter,
+								 trackID,
 								 eeID,
 								 //(*isim).energyLoss())
 								 chargeADC)
@@ -824,10 +829,12 @@ void SiTrackerGaussianSmearingRecHitConverter::smearHits(const edm::PSimHitConta
       
       // std::cout << "Error as reconstructed " << error.xx() << " " << error.xy() << " " << error.yy() << std::endl;
       
+    
       // create rechit
       temporaryRecHits[trackID].push_back(
-					  new SiTrackerGSRecHit2D(position, error, theDetUnit, 
-								  simHitCounter, trackID, 
+					  new SiTrackerGSRecHit2D(position, error, theDetUnit, Id, simtrackId1, simtrackId2,
+								  //simHitCounter,
+								  trackID, 
 								  eeID, 
 								  ClusterRef(FastTrackerClusterRefProd, simHitCounter),
 								  alphaMult, betaMult)
@@ -1286,6 +1293,13 @@ SiTrackerGaussianSmearingRecHitConverter::matchHits(
     //loop over rechits in track
     for ( ; rit != lastRecHit; ++rit,++recHitCounter){
 
+        // Initialise simtrackId1/2 and Id
+      int simtrackId1 = recHitCollectionMatched->at(rit).simtrackId1();
+      int simtrackId2 = recHitCollectionMatched->at(rit).simtrackId2();
+      int Id = recHitCollectionMatched->at(rit).Id();
+
+
+
       DetId detid = rit->geographicalId();
       unsigned int subdet = detid.subdetId();
       // if in the strip (subdet>2)
@@ -1399,8 +1413,8 @@ SiTrackerGaussianSmearingRecHitConverter::matchHits(
 	else{ //need to copy the original in a "matched" type rechit
 
 	  SiTrackerGSMatchedRecHit2D* rit_copy = new SiTrackerGSMatchedRecHit2D(rit->localPosition(), rit->localPositionError(),
-										*rit->det(), 
-										rit->simhitId(), rit->simtrackId(), rit->eeId(),
+										*rit->det(),rit->Id(),
+										rit->simtrackId1(), rit->simtrackId2(), rit->eeId(),
                                                                                 rit->cluster(),
                                                                                 rit->simMultX(), rit->simMultY()); 
 	  //std::cout << "Simple hit  hit: isMatched =\t" << rit_copy->isMatched() << ", "
@@ -1414,15 +1428,15 @@ SiTrackerGaussianSmearingRecHitConverter::matchHits(
       else { //need to copy the original in a "matched" type rechit
 
 	SiTrackerGSMatchedRecHit2D* rit_copy = new SiTrackerGSMatchedRecHit2D(rit->localPosition(), rit->localPositionError(),
-									      *rit->det(), 
-									      rit->simhitId(), rit->simtrackId(), rit->eeId(), 
+									      *rit->det(), rit->Id(), 
+									      rit->simtrackId1(),rit->simtrackId2(), rit->eeId(), 
                                                                               rit->cluster(),
 									      rit->simMultX(), rit->simMultY());	
 	
 	//std::cout << "Simple hit  hit: isMatched =\t" << rit_copy->isMatched() << ", "
 	//	  <<  rit_copy->monoHit() << ", " <<  rit_copy->stereoHit() << std::endl;
 	matchedMap[it->first].push_back( rit_copy );  // if not strip place the original one in vector (makining it into a matched)
-     }
+      }
       
     } // end loop over rechits
     

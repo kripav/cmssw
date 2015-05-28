@@ -104,7 +104,9 @@ SiTrackerGSMatchedRecHit2D * GSRecHitMatcher::match(const SiTrackerGSRecHit2D *m
     SiTrackerGSRecHit2D *adjustedMonoRH = new SiTrackerGSRecHit2D(LocalPoint(monoRH->localPosition().x(),0,0),
 								  monoRH->localPositionError(),
 								  *monoRH->det(),
-								  monoRH->simhitId(),
+								  monoRH->Id(),
+								  monoRH->simtrackId1(),
+								  monoRH->simtrackId2(),
 								  monoRH->simtrackId(),
 								  monoRH->eeId(),
 								  monoRH->cluster(),
@@ -115,7 +117,9 @@ SiTrackerGSMatchedRecHit2D * GSRecHitMatcher::match(const SiTrackerGSRecHit2D *m
     SiTrackerGSRecHit2D *adjustedStereoRH = new SiTrackerGSRecHit2D(LocalPoint(stereoRH->localPosition().x(),0,0),
 								    stereoRH->localPositionError(),
 								    *stereoRH->det(),
-								    stereoRH->simhitId(),
+								    stereoRH->Id(),
+								    stereoRH->simtrackId1(),
+								    stereoRH->simtrackId2(),
 								    stereoRH->simtrackId(),
 								    stereoRH->eeId(),
 								    stereoRH->cluster(),
@@ -123,8 +127,10 @@ SiTrackerGSMatchedRecHit2D * GSRecHitMatcher::match(const SiTrackerGSRecHit2D *m
 								    stereoRH->simMultY()
 								    );
     
-    SiTrackerGSMatchedRecHit2D *rV= new SiTrackerGSMatchedRecHit2D(position, error, *gluedDet, monoRH->simhitId(), 
-								   monoRH->simtrackId(), monoRH->eeId(), monoRH->cluster(), 
+    SiTrackerGSMatchedRecHit2D *rV= new SiTrackerGSMatchedRecHit2D(position, error, *gluedDet,
+								   monoRH->Id(),
+								   monoRH->simtrackId1(),								  
+								   monoRH->simtrackId2(), monoRH->eeId(), monoRH->cluster(), 
 								   monoRH->simMultX(), monoRH->simMultY(), 
 								   true, adjustedMonoRH, adjustedStereoRH);
     delete adjustedMonoRH;
@@ -205,7 +211,9 @@ SiTrackerGSMatchedRecHit2D * GSRecHitMatcher::projectOnly( const SiTrackerGSRecH
   SiTrackerGSRecHit2D *adjustedRH = new SiTrackerGSRecHit2D(LocalPoint(monoRH->localPosition().x(),0,0),
 							    monoRH->localPositionError(),
 							    *monoRH->det(),
-							    monoRH->simhitId(),
+							    monoRH->Id(),
+							    monoRH->simtrackId1(),
+							    monoRH->simtrackId2(),
 							    monoRH->simtrackId(),
 							    monoRH->eeId(),
 							    monoRH->cluster(),
@@ -214,11 +222,13 @@ SiTrackerGSMatchedRecHit2D * GSRecHitMatcher::projectOnly( const SiTrackerGSRecH
 							    );
   
   //DAO: Not quite sure what to do about the cluster ref, so I will fill it with the monoRH for now...
-  SiTrackerGSRecHit2D *otherRH = new SiTrackerGSRecHit2D(LocalPoint(-10000,-10000,-10000), LocalError(0,0,0),*otherDet, 0,0,0,monoRH->cluster(),0,0);
+  SiTrackerGSRecHit2D *otherRH = new SiTrackerGSRecHit2D(LocalPoint(-10000,-10000,-10000), LocalError(0,0,0),*otherDet, 0,0,0,0,0,monoRH->cluster(),0,0);
   if ((isMono && isStereo)||(!isMono&&!isStereo)) throw cms::Exception("GSRecHitMatcher") << "Something wrong with DetIds.";
   else if (isMono) {
-    SiTrackerGSMatchedRecHit2D *rV= new SiTrackerGSMatchedRecHit2D(projectedHitPos, rotatedError, *gluedDet, 
-								   monoRH->simhitId(),  monoRH->simtrackId(), monoRH->eeId(), monoRH->cluster(),
+    SiTrackerGSMatchedRecHit2D *rV= new SiTrackerGSMatchedRecHit2D(projectedHitPos, rotatedError, *gluedDet,
+								   monoRH->Id(),
+								   monoRH->simtrackId1(),
+								   monoRH->simtrackId2(), monoRH->eeId(), monoRH->cluster(),
 								   monoRH->simMultX(), monoRH->simMultY(), false, adjustedRH, otherRH);
     delete adjustedRH;
     delete otherRH;
@@ -226,9 +236,11 @@ SiTrackerGSMatchedRecHit2D * GSRecHitMatcher::projectOnly( const SiTrackerGSRecH
   }
   
   else{
-    SiTrackerGSMatchedRecHit2D *rV=new SiTrackerGSMatchedRecHit2D(projectedHitPos, rotatedError, *gluedDet, 
-								 monoRH->simhitId(),  monoRH->simtrackId(), monoRH->eeId(), monoRH->cluster(),
-								 monoRH->simMultX(), monoRH->simMultY(), false, otherRH, adjustedRH);
+    SiTrackerGSMatchedRecHit2D *rV=new SiTrackerGSMatchedRecHit2D(projectedHitPos, rotatedError, *gluedDet,
+								  monoRH->Id(),
+								  monoRH->simtrackId1(),
+								  monoRH->simtrackId2(), monoRH->eeId(), monoRH->cluster(),
+								  monoRH->simMultX(), monoRH->simMultY(), false, otherRH, adjustedRH);
     delete adjustedRH;
     delete otherRH;
     return rV;

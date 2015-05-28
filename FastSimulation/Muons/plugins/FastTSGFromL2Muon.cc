@@ -133,7 +133,7 @@ FastTSGFromL2Muon::produce(edm::Event& ev, const edm::EventSetup& es)
 	  (const SiTrackerGSMatchedRecHit2D*) (&(*(theSeedingRecHitRange.first)));
 
 	// The SimTrack id associated to that recHit
-	int simTrackId = theFirstSeedingRecHit->simtrackId();
+	int simTrackId = theFirstSeedingRecHit->simtrackId1();
 
 	// Track already associated to a seed
 	std::set<unsigned>::iterator tkId = tkIds.find(simTrackId);

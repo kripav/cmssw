@@ -122,9 +122,9 @@ void PileupJetAnalyzer::analyze(const edm::Event &event,
 					dynamic_cast<const SiTrackerGSRecHit2D*>(&*hitRef);
 				if (!hit)	
 					continue;
-				trackId = hit->simtrackId();
+				trackId = hit->simtrackId1();
 			} else
-				trackId = hit->simtrackId();
+				trackId = hit->simtrackId1();
 
 			for(;;) {
 				const SimTrack &simTrack =
