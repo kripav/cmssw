@@ -5,14 +5,16 @@
    <version ClassVersion="11" checksum="834943006"/>
    <version ClassVersion="10" checksum="2474445311"/>
   </class>
-  <class name="SiTrackerGSRecHit2D" ClassVersion="14">
+  <class name="SiTrackerGSRecHit2D" ClassVersion="15">
+   <version ClassVersion="15" checksum="4218333567"/>
    <version ClassVersion="14" checksum="2649268730"/>
    <version ClassVersion="13" checksum="707923418"/>
    <version ClassVersion="12" checksum="102911389"/>
    <version ClassVersion="11" checksum="1613493049"/>
    <version ClassVersion="10" checksum="877294307"/>
   </class>
-  <class name="SiTrackerGSMatchedRecHit2D" ClassVersion="15">
+  <class name="SiTrackerGSMatchedRecHit2D" ClassVersion="16">
+   <version ClassVersion="16" checksum="93210659"/>
    <version ClassVersion="15" checksum="3442397630"/>
    <version ClassVersion="14" checksum="2628507777"/>
    <version ClassVersion="13" checksum="1553184391"/>
@@ -162,6 +164,18 @@
   <class name="reco::ClusterRemovalInfo::SiPixelClusterRefProd" />
   <class name="reco::ClusterRemovalInfo::SiStripClusterRefProd" />
   <class name="edm::Wrapper<reco::ClusterRemovalInfo>" />
+
+
+
+
+
+ <class name="FastTRecHit2DCollection"/>
+ <class name="edm::Wrapper<FastTRecHit2DCollection>"/>
+
+ <class name="FastTRecHit2DCombinations"/>
+ <class name="edm::Wrapper<FastTRecHit2DCombinations>"/>
+
+
 
  <class name="FastTMatchedRecHit2DCollection"/>
  <class name="edm::Wrapper<FastTMatchedRecHit2DCollection>"/>

@@ -10,6 +10,7 @@
 
 typedef edm::RangeMap <DetId, edm::OwnVector<SiTrackerGSRecHit2D> > SiTrackerFullGSRecHit2DCollection;
 typedef edm::RangeMap <unsigned, edm::OwnVector<SiTrackerGSRecHit2D> > SiTrackerGSRecHit2DCollection;
+typedef std::vector<SiTrackerGSRecHit2D> SiTrackerGSRecHit2DCollectionVector;
 
 #endif
 

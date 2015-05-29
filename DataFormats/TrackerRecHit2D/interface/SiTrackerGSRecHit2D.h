@@ -14,15 +14,14 @@ public:
   
  
   
-  SiTrackerGSRecHit2D(): GSSiTrackerRecHit2DLocalPos(),
-                         Id_(),
-                         simtrackId1_(),
-			 simtrackId2_(),
-			 simtrackId_(),
-			 eeId_(),
-                         cluster_(),  
-			 pixelMultiplicityAlpha_(), 
-                         pixelMultiplicityBeta_() {}
+ SiTrackerGSRecHit2D(): GSSiTrackerRecHit2DLocalPos(),
+    Id_(),
+    simtrackId1_(),
+    simtrackId2_(),
+    eeId_(),
+    cluster_(),  
+    pixelMultiplicityAlpha_(), 
+    pixelMultiplicityBeta_() {}
   
   ~SiTrackerGSRecHit2D() {}
   
@@ -35,7 +34,6 @@ public:
 		       const int Id,
 		       const int simtrackId1,
 		       const int simtrackId2,
-		       const int simtrackId,
 		       const uint32_t eeId,
 		       ClusterRef const&  cluster,
 		       const int pixelMultiplicityX,
@@ -46,14 +44,13 @@ public:
   const int& Id()          const { return Id_;}
   const int& simtrackId1()   const { return simtrackId1_;}
   const int& simtrackId2()   const { return simtrackId2_;}
-  const int& simtrackId()  const { return simtrackId_;}
   const uint32_t& eeId()   const { return eeId_;}
   const int& simMultX()    const { return pixelMultiplicityAlpha_;}
   const int& simMultY()    const { return pixelMultiplicityBeta_;}
 
   ClusterRef const& cluster() const { return cluster_;}
   void setClusterRef(const ClusterRef &ref) { cluster_  = ref; }
-  
+  void setId(int Id) {Id_ = Id; }
   void setEeId(uint32_t eeId){eeId_ = eeId;}
 
   virtual bool sharesInput( const TrackingRecHit* other, SharedInputType what) const {return false;}
@@ -62,7 +59,6 @@ public:
   int Id_;
   int simtrackId1_;
   int simtrackId2_;
-  int simtrackId_;
   uint32_t eeId_;
   ClusterRef cluster_;
   int pixelMultiplicityAlpha_;
@@ -80,5 +76,12 @@ inline bool operator<( const SiTrackerGSRecHit2D& one, const SiTrackerGSRecHit2D
 }
 
 typedef SiTrackerGSRecHit2D FastTRecHit2D; //FastT stands for FastSim Tracker
+
+
+typedef SiTrackerGSRecHit2D FastTRecHit2D; //FastT stands for FastSim Tracker
+typedef std::vector<FastTRecHit2D> FastTRecHit2DCollection;
+typedef edm::Ref<FastTRecHit2DCollection> FastTRecHit2DRef;
+typedef std::vector<FastTRecHit2DRef> FastTRecHit2DCombination;  
+typedef std::vector<FastTRecHit2DCombination> FastTRecHit2DCombinations;  
 
 #endif

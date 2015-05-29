@@ -429,8 +429,11 @@ TrajectorySeedProducer::produce(edm::Event& e, const edm::EventSetup& es)
 
         std::vector<TrajectorySeedHitCandidate> trackerRecHits;
 	for (unsigned int h=0; h < theRecHitCombination.size(); ++h){
+	  
 	  const SiTrackerGSMatchedRecHit2D& theRecHit = *theRecHitCombination[h];
+	  
 	  previousTrackerHit=currentTrackerHit;
+	  
 	  currentTrackerHit = TrajectorySeedHitCandidate(&theRecHit,trackerGeometry,trackerTopology);
 
             if (!currentTrackerHit.isOnTheSameLayer(previousTrackerHit))

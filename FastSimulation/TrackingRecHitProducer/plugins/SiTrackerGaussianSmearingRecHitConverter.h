@@ -66,22 +66,22 @@ class SiTrackerGaussianSmearingRecHitConverter : public edm::stream::EDProducer 
   void smearHits(const edm::PSimHitContainer& input,
   //  void smearHits(edm::Handle<std::vector<PSimHit> >& input,
                  std::map<unsigned, edm::OwnVector<SiTrackerGSRecHit2D> >& theRecHits,
-                 std::map<unsigned, edm::OwnVector<FastTrackerCluster> >& theClusters,
+		 std::map<unsigned, edm::OwnVector<FastTrackerCluster> >& theClusters,
 		 const TrackerTopology *tTopo,
                  RandomEngineAndDistribution const*);
 
- void  matchHits( std::map<unsigned, edm::OwnVector<SiTrackerGSRecHit2D> >& theRecHits, 
-		  std::map<unsigned, edm::OwnVector<SiTrackerGSMatchedRecHit2D> >& matchedMap);//,
+   void  matchHits( std::map<unsigned, edm::OwnVector<SiTrackerGSRecHit2D> >& theRecHits, 
+		    std::map<unsigned, edm::OwnVector<SiTrackerGSMatchedRecHit2D> >& matchedMap);//,
 		  //		  MixCollection<PSimHit>& simhits);
    //		  const edm::PSimHitContainer& simhits);
 		  //		  std::vector<PSimHit>& simhits); 
 		  //		  edm::Handle<std::vector<PSimHit> >& simhits);
 
   void loadRecHits(std::map<unsigned,edm::OwnVector<SiTrackerGSRecHit2D> >& theRecHits, 
-		   SiTrackerGSRecHit2DCollection& theRecHitCollection) const;
+		   FastTRecHit2DCollection & theRecHitCollection) const;
 
   void loadMatchedRecHits(std::map<unsigned,edm::OwnVector<SiTrackerGSMatchedRecHit2D> >& theRecHits, 
-		   std::vector<SiTrackerGSMatchedRecHit2D>& theRecHitCollection) const;
+			  FastTMatchedRecHit2DCollection & theRecHitCollection) const;
 
   void loadClusters(std::map<unsigned,edm::OwnVector<FastTrackerCluster> >& theClusterMap, 
                     FastTrackerClusterCollection& theClusterCollection) const;

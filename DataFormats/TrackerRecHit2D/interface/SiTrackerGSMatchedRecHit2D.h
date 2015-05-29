@@ -65,13 +65,13 @@ public:
 
  ClusterRef const& cluster() const { return cluster_;}
   void setClusterRef(const ClusterRef &ref) { cluster_  = ref; }
- 
+  void setId(int Id) {Id_ = Id; }
   void setEeId(uint32_t eeId){eeId_ = eeId;}
 
   virtual bool sharesInput( const TrackingRecHit* other, SharedInputType what) const;
  
 private:
-  int const Id_;
+  int Id_;
   int const simtrackId1_;
   int const simtrackId2_;
   uint32_t eeId_;
